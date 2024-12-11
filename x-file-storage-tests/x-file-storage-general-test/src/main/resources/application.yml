@@ -109,6 +109,16 @@ dromara:
         bucket-name: ??
         domain: ?? # 访问域名，注意“/”结尾，例如：https://abc.hn-bkt.clouddn.com/
         base-path: s3/ # 基础路径
+    amazon-s3-v2: # Amazon S3 SDK V2
+      - platform: amazon-s3-v2-1 # 存储平台标识
+        enable-storage: true  # 启用存储
+        access-key: ??
+        secret-key: ??
+        region: ?? # 可选
+        end-point: ?? # 必传
+        bucket-name: ??
+        domain: ?? # 访问域名，注意“/”结尾，例如：https://abc.hn-bkt.clouddn.com/
+        base-path: s3/ # 基础路径
     ftp: # FTP
       - platform: ftp-1 # 存储平台标识
         enable-storage: true  # 启用存储

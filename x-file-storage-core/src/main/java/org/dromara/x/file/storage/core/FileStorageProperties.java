@@ -106,6 +106,11 @@ public class FileStorageProperties {
     private List<? extends AmazonS3Config> amazonS3 = new ArrayList<>();
 
     /**
+     * Amazon S3 V2
+     */
+    private List<? extends AmazonS3V2Config> amazonS3V2 = new ArrayList<>();
+
+    /**
      * FTP
      */
     private List<? extends FtpConfig> ftp = new ArrayList<>();
@@ -515,6 +520,55 @@ public class FileStorageProperties {
     @Accessors(chain = true)
     @EqualsAndHashCode(callSuper = true)
     public static class AmazonS3Config extends BaseConfig {
+
+        private String accessKey;
+
+        private String secretKey;
+
+        private String region;
+
+        private String endPoint;
+
+        private String bucketName;
+
+        /**
+         * 访问域名
+         */
+        private String domain = "";
+
+        /**
+         * 基础路径
+         */
+        private String basePath = "";
+
+        /**
+         * 默认的 ACL，详情 {@link Constant.AwsS3ACL}
+         */
+        private String defaultAcl;
+
+        /**
+         * 自动分片上传阈值，达到此大小则使用分片上传，默认 128MB
+         */
+        private int multipartThreshold = 128 * 1024 * 1024;
+
+        /**
+         * 自动分片上传时每个分片大小，默认 32MB
+         */
+        private int multipartPartSize = 32 * 1024 * 1024;
+
+        /**
+         * 其它自定义配置
+         */
+        private Map<String, Object> attr = new LinkedHashMap<>();
+    }
+
+    /**
+     * Amazon S3 V2
+     */
+    @Data
+    @Accessors(chain = true)
+    @EqualsAndHashCode(callSuper = true)
+    public static class AmazonS3V2Config extends BaseConfig {
 
         private String accessKey;
 

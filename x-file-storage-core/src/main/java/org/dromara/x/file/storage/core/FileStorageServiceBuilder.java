@@ -36,6 +36,7 @@ import org.dromara.x.file.storage.core.tika.DefaultTikaFactory;
 import org.dromara.x.file.storage.core.tika.TikaContentTypeDetect;
 import org.dromara.x.file.storage.core.tika.TikaFactory;
 import org.dromara.x.file.storage.core.util.Tools;
+import software.amazon.awssdk.services.s3.S3Client;
 
 @Slf4j
 @Getter
@@ -241,6 +242,7 @@ public class FileStorageServiceBuilder {
         fileStorageList.addAll(buildUpyunUssFileStorage(properties.getUpyunUss(), clientFactoryList));
         fileStorageList.addAll(buildMinioFileStorage(properties.getMinio(), clientFactoryList));
         fileStorageList.addAll(buildAmazonS3FileStorage(properties.getAmazonS3(), clientFactoryList));
+        fileStorageList.addAll(buildAmazonS3V2FileStorage(properties.getAmazonS3V2(), clientFactoryList));
         fileStorageList.addAll(buildFtpFileStorage(properties.getFtp(), clientFactoryList));
         fileStorageList.addAll(buildSftpFileStorage(properties.getSftp(), clientFactoryList));
         fileStorageList.addAll(buildWebDavFileStorage(properties.getWebdav(), clientFactoryList));
@@ -443,6 +445,25 @@ public class FileStorageServiceBuilder {
                             clientFactoryList,
                             () -> new AmazonS3FileStorageClientFactory(config));
                     return new AmazonS3FileStorage(config, clientFactory);
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 根据配置文件创建 Amazon S3 存储平台，使用v2SDK
+     */
+    public static List<AmazonS3V2FileStorage> buildAmazonS3V2FileStorage(
+            List<? extends AmazonS3V2Config> list, List<List<FileStorageClientFactory<?>>> clientFactoryList) {
+        if (CollUtil.isEmpty(list)) return Collections.emptyList();
+        buildFileStorageDetect(list, "Amazon S3 v2", "software.amazon.awssdk.services.s3.S3Client");
+        return list.stream()
+                .map(config -> {
+                    log.info("加载 Amazon S3 v2 存储平台：{}", config.getPlatform());
+                    FileStorageClientFactory<S3Client> clientFactory = getFactory(
+                            config.getPlatform(),
+                            clientFactoryList,
+                            () -> new AmazonS3V2FileStorageClientFactory(config));
+                    return new AmazonS3V2FileStorage(config, clientFactory);
                 })
                 .collect(Collectors.toList());
     }

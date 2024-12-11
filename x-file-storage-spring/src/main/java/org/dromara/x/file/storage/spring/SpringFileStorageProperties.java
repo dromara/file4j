@@ -119,6 +119,11 @@ public class SpringFileStorageProperties {
     private List<? extends SpringAmazonS3Config> amazonS3 = new ArrayList<>();
 
     /**
+     * Amazon S3
+     */
+    private List<? extends SpringAmazonS3V2Config> amazonS3V2 = new ArrayList<>();
+
+    /**
      * FTP
      */
     private List<? extends SpringFtpConfig> ftp = new ArrayList<>();
@@ -196,6 +201,9 @@ public class SpringFileStorageProperties {
                 minio.stream().filter(SpringMinioConfig::getEnableStorage).collect(Collectors.toList()));
         properties.setAmazonS3(
                 amazonS3.stream().filter(SpringAmazonS3Config::getEnableStorage).collect(Collectors.toList()));
+        properties.setAmazonS3V2(amazonS3V2.stream()
+                .filter(SpringAmazonS3V2Config::getEnableStorage)
+                .collect(Collectors.toList()));
         properties.setFtp(ftp.stream().filter(SpringFtpConfig::getEnableStorage).collect(Collectors.toList()));
         properties.setSftp(
                 sftp.stream().filter(SpringSftpConfig::getEnableStorage).collect(Collectors.toList()));
@@ -360,6 +368,19 @@ public class SpringFileStorageProperties {
     @Accessors(chain = true)
     @EqualsAndHashCode(callSuper = true)
     public static class SpringAmazonS3Config extends AmazonS3Config {
+        /**
+         * 启用存储
+         */
+        private Boolean enableStorage = false;
+    }
+
+    /**
+     * Amazon S3
+     */
+    @Data
+    @Accessors(chain = true)
+    @EqualsAndHashCode(callSuper = true)
+    public static class SpringAmazonS3V2Config extends AmazonS3V2Config {
         /**
          * 启用存储
          */

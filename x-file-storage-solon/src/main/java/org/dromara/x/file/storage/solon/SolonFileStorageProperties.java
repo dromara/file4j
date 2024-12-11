@@ -120,6 +120,11 @@ public class SolonFileStorageProperties {
     private List<? extends SolonAmazonS3Config> amazonS3 = new ArrayList<>();
 
     /**
+     * Amazon S3 V2
+     */
+    private List<? extends SpringAmazonS3V2Config> amazonS3V2 = new ArrayList<>();
+
+    /**
      * FTP
      */
     private List<? extends SolonFtpConfig> ftp = new ArrayList<>();
@@ -196,8 +201,11 @@ public class SolonFileStorageProperties {
         properties.setMinio(
                 minio.stream().filter(SolonMinioConfig::getEnableStorage).collect(Collectors.toList()));
         properties.setAmazonS3(
-                amazonS3.stream().filter(SolonAmazonS3Config::getEnableStorage).collect(Collectors.toList()));
-        properties.setFtp(ftp.stream().filter(SolonFtpConfig::getEnableStorage).collect(Collectors.toList()));
+                amazonS3.stream().filter(SpringAmazonS3Config::getEnableStorage).collect(Collectors.toList()));
+        properties.setAmazonS3V2(amazonS3V2.stream()
+                .filter(SpringAmazonS3V2Config::getEnableStorage)
+                .collect(Collectors.toList()));
+        properties.setFtp(ftp.stream().filter(SpringFtpConfig::getEnableStorage).collect(Collectors.toList()));
         properties.setSftp(
                 sftp.stream().filter(SolonSftpConfig::getEnableStorage).collect(Collectors.toList()));
         properties.setWebdav(
@@ -361,6 +369,19 @@ public class SolonFileStorageProperties {
     @Accessors(chain = true)
     @EqualsAndHashCode(callSuper = true)
     public static class SolonAmazonS3Config extends AmazonS3Config {
+        /**
+         * 启用存储
+         */
+        private Boolean enableStorage = false;
+    }
+
+    /**
+     * Amazon S3 V2
+     */
+    @Data
+    @Accessors(chain = true)
+    @EqualsAndHashCode(callSuper = true)
+    public static class SpringAmazonS3V2Config extends AmazonS3V2Config {
         /**
          * 启用存储
          */
