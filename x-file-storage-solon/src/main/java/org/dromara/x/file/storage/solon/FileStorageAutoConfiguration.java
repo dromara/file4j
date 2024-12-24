@@ -31,10 +31,7 @@ import org.noear.solon.annotation.*;
 @Condition(onMissingBean = FileStorageService.class)
 public class FileStorageAutoConfiguration {
 
-    @Inject
-    private SolonFileStorageProperties properties;
-
-    @Bean
+    @Bean(typed = true)
     public SolonFileStorageProperties solonFileStorageProperties(
             @Inject("${dromara.x-file-storage}") SolonFileStorageProperties properties) {
         return properties;
@@ -74,6 +71,7 @@ public class FileStorageAutoConfiguration {
     //  @Bean(destroyMethod = "destroy")
     @Bean
     public FileStorageService fileStorageService(
+            @Inject SolonFileStorageProperties properties,
             FileRecorder fileRecorder,
             @Inject(required = false) List<List<? extends FileStorage>> fileStorageLists,
             @Inject(required = false) List<FileStorageAspect> aspectList,
